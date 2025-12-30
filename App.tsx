@@ -154,7 +154,7 @@ const BrandLogo = ({ inverted = false, type = 'header' }: { inverted?: boolean, 
        <img 
          src={logoSrc} 
          alt={config.companyName}
-         className={`h-20 w-auto object-contain transition-all duration-300 ${inverted ? 'brightness-0 invert opacity-90' : ''}`}
+         className="h-20 w-auto object-contain transition-all duration-300"
          onError={() => setImageError(true)}
        />
     </div>
