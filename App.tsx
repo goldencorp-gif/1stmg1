@@ -149,12 +149,16 @@ const BrandLogo = ({ inverted = false, type = 'header' }: { inverted?: boolean, 
     );
   }
   
+  // Increased sizes: Header h-24 (was h-20), Footer h-32 (was h-20)
+  // Responsive sizing added for better scalability
+  const sizeClasses = type === 'header' ? 'h-24 md:h-28' : 'h-32 md:h-40';
+  
   return (
     <div className="flex items-center justify-center py-2 select-none">
        <img 
          src={logoSrc} 
          alt={config.companyName}
-         className="h-20 w-auto object-contain transition-all duration-300"
+         className={`${sizeClasses} w-auto object-contain transition-all duration-300`}
          onError={() => setImageError(true)}
        />
     </div>
