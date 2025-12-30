@@ -1,5 +1,7 @@
 {
   "name": "1st Mortgage Group",
+  "version": "1.0.0",
+  "variant": "The Editorial Edition",
   "description": "Professional Australian mortgage brokerage providing clear advice, smart lending, and trusted outcomes.",
   "requestFramePermissions": []
 }
