@@ -10,7 +10,9 @@ const AIChatWidget: React.FC = () => {
   const [messages, setMessages] = useState<{role: 'user' | 'model', text: string}[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  
+  // Changed from messagesEndRef to chatContainerRef to control internal scrolling
+  const chatContainerRef = useRef<HTMLDivElement>(null);
   const chatSessionRef = useRef<any>(null);
 
   useEffect(() => {
@@ -51,7 +53,10 @@ const AIChatWidget: React.FC = () => {
   }, [language]);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    // Only scroll the container, not the window
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
   };
 
   useEffect(() => { scrollToBottom(); }, [messages]);
@@ -110,7 +115,11 @@ const AIChatWidget: React.FC = () => {
          </div>
       </div>
       
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-900/50 scrollbar-thin scrollbar-thumb-slate-700">
+      {/* Attached ref to container here */}
+      <div 
+        ref={chatContainerRef} 
+        className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-900/50 scrollbar-thin scrollbar-thumb-slate-700"
+      >
          {messages.map((msg, idx) => (
             <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                <div className={`max-w-[85%] rounded-2xl p-3.5 text-sm font-medium leading-relaxed shadow-sm ${
@@ -128,7 +137,6 @@ const AIChatWidget: React.FC = () => {
                </div>
             </div>
          )}
-         <div ref={messagesEndRef} />
       </div>
 
       <div className="p-3 bg-slate-950 border-t border-slate-700">
