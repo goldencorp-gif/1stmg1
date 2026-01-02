@@ -59,17 +59,27 @@ For structural changes or text updates on specific pages, you will need to edit 
 - **Services:** `pages/ServicesPage.tsx`
 - **Calculator:** `pages/CalculatorPage.tsx`
 
-## 🚀 Deployment
+## 🚀 Deployment to Vercel
 
-### Auto-Deployment (Recommended)
-Connect this GitHub repository to **Netlify** or **Vercel**.
-- Any change you commit to GitHub will automatically trigger a new build and deployment.
-- The `public` folder ensures your logo and settings are copied correctly to the live site.
+### Step 1: Connect to Vercel
+1. Go to [Vercel](https://vercel.com) and sign up/login.
+2. Click **"Add New..."** -> **"Project"**.
+3. Import this GitHub repository.
 
-### Manual Deployment
-1. Run `npm install` to install dependencies.
-2. Run `npm run build` to generate the production files.
-3. Upload the contents of the `dist` folder to your web server.
+### Step 2: Configure Project
+Vercel should automatically detect that this is a **Vite** project.
+- **Framework Preset:** Vite
+- **Root Directory:** ./ (default)
+- **Build Command:** `npm run build` (default)
+- **Output Directory:** `dist` (default)
+
+### Step 3: Environment Variables (Important)
+Your AI features require a Google Gemini API Key.
+1. In the Vercel project deployment screen (or under Settings > Environment Variables).
+2. Add a new variable:
+   - **Key:** `API_KEY`
+   - **Value:** [Your Google Gemini API Key]
+3. Click **Deploy**.
 
 ## 📁 Project Structure
 
@@ -77,3 +87,4 @@ Connect this GitHub repository to **Netlify** or **Vercel**.
 - `public/` - Static assets (Images, JSON config) that are copied to the build.
 - `pages/` - Individual page content.
 - `index.html` - The entry point of the website.
+- `vercel.json` - Configuration for Vercel routing.
