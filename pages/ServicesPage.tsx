@@ -1,14 +1,32 @@
 
 import React, { useState } from 'react';
-import { Home, RefreshCcw, Building2, Hammer, Landmark, AlertCircle, ChevronRight, Handshake, Shield, Scale, Search, Briefcase, X, Check, ArrowRight } from 'lucide-react';
+import { Home, RefreshCcw, Building2, Hammer, Landmark, AlertCircle, ChevronRight, Handshake, Shield, Scale, Search, Briefcase, X, Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { useLanguage, Language } from '../App';
+import { useLanguage, useSiteConfig, Language } from '../App';
 
 const ServicesPage: React.FC = () => {
   const { language } = useLanguage();
-  const [selectedPartner, setSelectedPartner] = useState<string | null>(null);
+  const config = useSiteConfig();
+  
+  // Changed to store the ID of the partner (e.g., 'legal') instead of the translated title
+  const [selectedPartnerId, setSelectedPartnerId] = useState<string | null>(null);
+  
   const [formState, setFormState] = useState({ name: '', phone: '', email: '', notes: '' });
   const [submitted, setSubmitted] = useState(false);
+
+  // ----------------------------------------------------------------------
+  // PARTNER EMAIL CONFIGURATION
+  // ----------------------------------------------------------------------
+  // Enter the email addresses for your referral partners below.
+  // When a client requests an intro, an email draft will be created 
+  // addressed to these emails, with YOU (the broker) CC'd.
+  const partnerEmails: Record<string, string> = {
+    'legal': 'conveyancing@partner-example.com',
+    'insurance': 'insurance@partner-example.com',
+    'buyers_agent': 'property@partner-example.com',
+    'finance': 'financialplanning@partner-example.com'
+  };
+  // ----------------------------------------------------------------------
 
   const content: Record<Language, any> = {
     en: {
@@ -32,13 +50,13 @@ const ServicesPage: React.FC = () => {
       eco_fin_d: 'Long-term wealth and tax structuring.',
       btn_connect: 'Request Intro',
       modal_title: 'Connect with a {service} Expert',
-      modal_desc: 'We will introduce you via email to ensure our partner knows you are a 1st Mortgage Group client. This guarantees you receive our negotiated service standards.',
+      modal_desc: 'We will draft an introduction email for you to send. This ensures our partner knows you are a 1st Mortgage Group client and includes us in the conversation.',
       form_name: 'Your Name',
       form_phone: 'Phone Number',
       form_email: 'Email',
-      form_submit: 'Send Introduction Request',
-      success_msg: 'Introduction Requested!',
-      success_desc: 'We have received your request. A broker will send a joint email introduction shortly connecting you with our preferred partner.',
+      form_submit: 'Draft Introduction Email',
+      success_msg: 'Next Step',
+      success_desc: 'Your email client should have opened with a drafted introduction. Please hit "Send" to complete the request.',
       s1: 'Home Loans',
       s1_f: ['First home buyer loans', 'Owner-occupied purchases'],
       s2: 'Refinancing',
@@ -71,13 +89,13 @@ const ServicesPage: React.FC = () => {
       eco_fin_d: '长期财富管理与税务架构规划。',
       btn_connect: '请求引荐',
       modal_title: '对接{service}专家',
-      modal_desc: '我们将通过电子邮件为您进行引荐，以确保合作伙伴知晓您是第一房贷集团的客户，从而保证您获得我们要定的服务标准。',
+      modal_desc: '我们将为您起草一封介绍邮件。这确保了合作伙伴知晓您是第一房贷集团的客户，并将我们也包含在对话中。',
       form_name: '您的姓名',
       form_phone: '电话号码',
       form_email: '电子邮箱',
-      form_submit: '发送引荐请求',
-      success_msg: '请求已发送！',
-      success_desc: '我们已收到您的请求。我们的经纪人稍后将发送一封联合介绍邮件，将您与我们的首选合作伙伴联系起来。',
+      form_submit: '起草介绍邮件',
+      success_msg: '下一步',
+      success_desc: '您的邮件客户端应该已经打开并起草好了介绍邮件。请点击“发送”以完成请求。',
       s1: '住房贷款',
       s1_f: ['首次置业贷款', '自住房购买'],
       s2: '转贷/再融资',
@@ -110,13 +128,13 @@ const ServicesPage: React.FC = () => {
       eco_fin_d: 'Estructuración fiscal y patrimonial a largo plazo.',
       btn_connect: 'Solicitar Intro',
       modal_title: 'Conectar con experto en {service}',
-      modal_desc: 'Le presentaremos por correo electrónico para garantizar que nuestro socio sepa que es cliente de 1st Mortgage Group.',
+      modal_desc: 'Redactaremos un correo de presentación para usted. Esto asegura que nuestro socio sepa que es cliente de 1st Mortgage Group.',
       form_name: 'Su Nombre',
       form_phone: 'Teléfono',
       form_email: 'Correo',
-      form_submit: 'Enviar Solicitud',
-      success_msg: '¡Solicitud Enviada!',
-      success_desc: 'Hemos recibido su solicitud. Un broker enviará una introducción conjunta por correo electrónico en breve.',
+      form_submit: 'Redactar Correo',
+      success_msg: 'Siguiente Paso',
+      success_desc: 'Su cliente de correo debería haberse abierto. Por favor presione "Enviar" para completar.',
       s1: 'Préstamos para Vivienda',
       s1_f: ['Préstamos para primeros compradores', 'Compras de vivienda propia'],
       s2: 'Refinanciación',
@@ -149,13 +167,13 @@ const ServicesPage: React.FC = () => {
       eco_fin_d: 'Cấu trúc tài sản và thuế dài hạn.',
       btn_connect: 'Yêu cầu giới thiệu',
       modal_title: 'Kết nối với chuyên gia {service}',
-      modal_desc: 'Chúng tôi sẽ giới thiệu bạn qua email để đảm bảo đối tác biết bạn là khách hàng của 1st Mortgage Group.',
+      modal_desc: 'Chúng tôi sẽ soạn email giới thiệu cho bạn. Điều này đảm bảo đối tác biết bạn là khách hàng của 1st Mortgage Group.',
       form_name: 'Tên của bạn',
       form_phone: 'Số điện thoại',
       form_email: 'Email',
-      form_submit: 'Gửi yêu cầu',
-      success_msg: 'Đã gửi yêu cầu!',
-      success_desc: 'Chúng tôi đã nhận được yêu cầu. Một broker sẽ sớm gửi email giới thiệu chung kết nối bạn với đối tác của chúng tôi.',
+      form_submit: 'Soạn Email Giới thiệu',
+      success_msg: 'Bước tiếp theo',
+      success_desc: 'Ứng dụng email của bạn đã mở với bản nháp. Vui lòng nhấn "Gửi" để hoàn tất.',
       s1: 'Vay mua nhà',
       s1_f: ['Vay mua nhà lần đầu', 'Mua nhà để ở'],
       s2: 'Tái cấp vốn',
@@ -188,13 +206,13 @@ const ServicesPage: React.FC = () => {
       eco_fin_d: 'दीर्घकालिक धन और कर संरचना।',
       btn_connect: 'परिचय का अनुरोध करें',
       modal_title: '{service} विशेषज्ञ के साथ जुड़ें',
-      modal_desc: 'हम ईमेल के माध्यम से आपका परिचय कराएंगे ताकि यह सुनिश्चित हो सके कि हमारा साथी जानता है कि आप 1st Mortgage Group के ग्राहक हैं।',
+      modal_desc: 'हम आपके भेजने के लिए एक परिचय ईमेल का मसौदा तैयार करेंगे। यह सुनिश्चित करता है कि हमारा साथी जानता है कि आप 1st Mortgage Group के ग्राहक हैं।',
       form_name: 'आपका नाम',
       form_phone: 'फ़ोन नंबर',
       form_email: 'ईमेल',
-      form_submit: 'परिचय अनुरोध भेजें',
-      success_msg: 'अनुरोध भेजा गया!',
-      success_desc: 'हमें आपका अनुरोध प्राप्त हुआ है। एक ब्रोकर जल्द ही आपको हमारे पसंदीदा साथी से जोड़ने के लिए एक संयुक्त ईमेल परिचय भेजेगा।',
+      form_submit: 'ड्राफ्ट परिचय ईमेल',
+      success_msg: 'अगला कदम',
+      success_desc: 'आपका ईमेल क्लाइंट ड्राफ्ट के साथ खुल गया है। अनुरोध पूरा करने के लिए कृपया "भेजें" दबाएं।',
       s1: 'होम लोन',
       s1_f: ['पहली बार घर खरीदार ऋण', 'स्वयं के रहने के लिए खरीदारी'],
       s2: 'पुनर्वित्त (Refinancing)',
@@ -225,14 +243,28 @@ const ServicesPage: React.FC = () => {
     { title: current.eco_fin, desc: current.eco_fin_d, icon: <Briefcase className="w-5 h-5" />, id: 'finance' },
   ];
 
+  // Helper to get title for the selected ID
+  const selectedPartnerTitle = partners.find(p => p.id === selectedPartnerId)?.title || '';
+
   const handlePartnerSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Logic to send email would go here
+    if (!selectedPartnerId) return;
+
+    const partnerEmail = partnerEmails[selectedPartnerId];
+    // Subject line that identifies the lead source
+    const subject = `Intro: ${formState.name} (via ${config.companyName})`;
+    
+    // Body that introduces the client and asks for connection
+    const body = `Hi,\n\nI would like to introduce ${formState.name} who is a client of ${config.companyName} and requires assistance with ${selectedPartnerTitle}.\n\nClient Details:\nName: ${formState.name}\nPhone: ${formState.phone}\nEmail: ${formState.email}\n\nPlease assist them with their requirements.\n\nRegards,\n${config.companyName} Team\n(CC'd for tracking)`;
+
+    // Open mail client: To Partner, CC Broker, Subject, Body
+    window.location.href = `mailto:${partnerEmail}?cc=${config.contactEmail}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
     setSubmitted(true);
   };
 
   const closeModal = () => {
-    setSelectedPartner(null);
+    setSelectedPartnerId(null);
     setSubmitted(false);
     setFormState({ name: '', phone: '', email: '', notes: '' });
   };
@@ -298,7 +330,7 @@ const ServicesPage: React.FC = () => {
                    <h3 className="font-bold text-slate-900 text-sm mb-2">{p.title}</h3>
                    <p className="text-xs text-slate-500 font-medium leading-relaxed mb-6 flex-grow">{p.desc}</p>
                    <button 
-                    onClick={() => setSelectedPartner(p.title)}
+                    onClick={() => setSelectedPartnerId(p.id)}
                     className="w-full py-2 bg-slate-50 hover:bg-gold hover:text-white text-slate-900 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-colors"
                    >
                      {current.btn_connect}
@@ -320,7 +352,7 @@ const ServicesPage: React.FC = () => {
       </div>
 
       {/* Partner Connection Modal */}
-      {selectedPartner && (
+      {selectedPartnerId && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
            <div className="bg-white rounded-[32px] max-w-lg w-full p-8 md:p-10 shadow-2xl relative">
               <button onClick={closeModal} className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-900 transition-colors">
@@ -335,7 +367,7 @@ const ServicesPage: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="text-2xl font-serif-brand italic font-bold text-slate-900">
-                        {current.modal_title.replace('{service}', selectedPartner)}
+                        {current.modal_title.replace('{service}', selectedPartnerTitle)}
                       </h3>
                     </div>
                   </div>

@@ -29,6 +29,25 @@ If you want a different logo for the footer (e.g., a simplified version), follow
 
 *If `footerLogoUrl` is left empty `""`, the site will automatically use the main `logoUrl` for both.*
 
+## 🤝 Partner Concierge Configuration
+
+To set up the referral emails for the "Partner Concierge" section on the Services page:
+
+1. Open `pages/ServicesPage.tsx`.
+2. Locate the `partnerEmails` configuration object near the top of the file (around line 18).
+3. Replace the placeholder emails with your actual partners' email addresses.
+
+```typescript
+const partnerEmails: Record<string, string> = {
+  'legal': 'conveyancing@actual-partner.com', // Update this
+  'insurance': 'insurance@actual-partner.com', // Update this
+  'buyers_agent': 'agent@actual-partner.com', // Update this
+  'finance': 'planner@actual-partner.com' // Update this
+};
+```
+
+When a user submits the request, it will open their email client addressed to these emails, with you (the broker) automatically CC'd.
+
 ## 🛠 Quick Maintenance (No Code Required)
 
 You can update the **Company Name**, **Phone Number**, and **Email** by editing the settings file.
