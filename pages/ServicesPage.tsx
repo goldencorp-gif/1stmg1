@@ -1,11 +1,14 @@
 
-import React from 'react';
-import { Home, RefreshCcw, Building2, Hammer, Landmark, AlertCircle, ChevronRight } from 'lucide-react';
+import React, { useState } from 'react';
+import { Home, RefreshCcw, Building2, Hammer, Landmark, AlertCircle, ChevronRight, Handshake, Shield, Scale, Search, Briefcase, X, Check, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage, Language } from '../App';
 
 const ServicesPage: React.FC = () => {
   const { language } = useLanguage();
+  const [selectedPartner, setSelectedPartner] = useState<string | null>(null);
+  const [formState, setFormState] = useState({ name: '', phone: '', email: '', notes: '' });
+  const [submitted, setSubmitted] = useState(false);
 
   const content: Record<Language, any> = {
     en: {
@@ -17,6 +20,25 @@ const ServicesPage: React.FC = () => {
       cta_btn: 'Get in touch',
       note_title: 'Important Note',
       note_desc: 'We provide credit assistance only. Loan approval and credit decisions are made by the lender. Our role is to find the most suitable option and manage the application process on your behalf.',
+      eco_title: 'Partner Concierge',
+      eco_desc: 'Don\'t risk going it alone. We facilitate warm introductions to our vetted network of professionals to ensure you get priority service and VIP rates.',
+      eco_legal: 'Legal & Conveyancing',
+      eco_legal_d: 'Contract reviews and settlement handling.',
+      eco_ins: 'Insurance & Protection',
+      eco_ins_d: 'Building, contents, and income protection.',
+      eco_ba: "Buyer's Advocacy",
+      eco_ba_d: 'Expert help finding and negotiating property.',
+      eco_fin: 'Financial Planning',
+      eco_fin_d: 'Long-term wealth and tax structuring.',
+      btn_connect: 'Request Intro',
+      modal_title: 'Connect with a {service} Expert',
+      modal_desc: 'We will introduce you via email to ensure our partner knows you are a 1st Mortgage Group client. This guarantees you receive our negotiated service standards.',
+      form_name: 'Your Name',
+      form_phone: 'Phone Number',
+      form_email: 'Email',
+      form_submit: 'Send Introduction Request',
+      success_msg: 'Introduction Requested!',
+      success_desc: 'We have received your request. A broker will send a joint email introduction shortly connecting you with our preferred partner.',
       s1: 'Home Loans',
       s1_f: ['First home buyer loans', 'Owner-occupied purchases'],
       s2: 'Refinancing',
@@ -37,6 +59,25 @@ const ServicesPage: React.FC = () => {
       cta_btn: '联系我们',
       note_title: '重要提示',
       note_desc: '我们仅提供信贷协助。贷款审批和信贷决策由贷款机构做出。我们的职责是代表您寻找最合适的方案并管理申请流程。',
+      eco_title: '合作伙伴礼宾服务',
+      eco_desc: '不要冒险独自寻找。我们为您对接经过严格筛选的专业网络，确保您获得优先服务和VIP费率。',
+      eco_legal: '法律与过户',
+      eco_legal_d: '购房合同审查与交割处理。',
+      eco_ins: '保险与保障',
+      eco_ins_d: '房屋保险、财产险及收入保障险。',
+      eco_ba: "买家代理 (Buyer's Agent)",
+      eco_ba_d: '专家协助寻找房源及谈判议价。',
+      eco_fin: '财务规划',
+      eco_fin_d: '长期财富管理与税务架构规划。',
+      btn_connect: '请求引荐',
+      modal_title: '对接{service}专家',
+      modal_desc: '我们将通过电子邮件为您进行引荐，以确保合作伙伴知晓您是第一房贷集团的客户，从而保证您获得我们要定的服务标准。',
+      form_name: '您的姓名',
+      form_phone: '电话号码',
+      form_email: '电子邮箱',
+      form_submit: '发送引荐请求',
+      success_msg: '请求已发送！',
+      success_desc: '我们已收到您的请求。我们的经纪人稍后将发送一封联合介绍邮件，将您与我们的首选合作伙伴联系起来。',
       s1: '住房贷款',
       s1_f: ['首次置业贷款', '自住房购买'],
       s2: '转贷/再融资',
@@ -57,6 +98,25 @@ const ServicesPage: React.FC = () => {
       cta_btn: 'Ponerse en contacto',
       note_title: 'Nota Importante',
       note_desc: 'Sólo proporcionamos asistencia crediticia. La aprobación de los préstamos y las decisiones de crédito son tomadas por el prestamista. Nuestra función es encontrar la opción más adecuada y gestionar el proceso de solicitud en su nombre.',
+      eco_title: 'Conserjería de Socios',
+      eco_desc: 'No se arriesgue a ir solo. Facilitamos presentaciones cálidas a nuestra red de profesionales examinados para garantizarle un servicio prioritario.',
+      eco_legal: 'Legal y Traspaso',
+      eco_legal_d: 'Revisión de contratos y gestión de liquidación.',
+      eco_ins: 'Seguros y Protección',
+      eco_ins_d: 'Protección de edificios, contenidos e ingresos.',
+      eco_ba: "Defensa del Comprador",
+      eco_ba_d: 'Ayuda experta para encontrar y negociar propiedades.',
+      eco_fin: 'Planificación Financiera',
+      eco_fin_d: 'Estructuración fiscal y patrimonial a largo plazo.',
+      btn_connect: 'Solicitar Intro',
+      modal_title: 'Conectar con experto en {service}',
+      modal_desc: 'Le presentaremos por correo electrónico para garantizar que nuestro socio sepa que es cliente de 1st Mortgage Group.',
+      form_name: 'Su Nombre',
+      form_phone: 'Teléfono',
+      form_email: 'Correo',
+      form_submit: 'Enviar Solicitud',
+      success_msg: '¡Solicitud Enviada!',
+      success_desc: 'Hemos recibido su solicitud. Un broker enviará una introducción conjunta por correo electrónico en breve.',
       s1: 'Préstamos para Vivienda',
       s1_f: ['Préstamos para primeros compradores', 'Compras de vivienda propia'],
       s2: 'Refinanciación',
@@ -77,6 +137,25 @@ const ServicesPage: React.FC = () => {
       cta_btn: 'Liên hệ ngay',
       note_title: 'Lưu ý quan trọng',
       note_desc: 'Chúng tôi chỉ cung cấp hỗ trợ tín dụng. Việc phê duyệt khoản vay và quyết định tín dụng do bên cho vay thực hiện. Vai trò của chúng tôi là tìm phương án phù hợp nhất và quản lý quy trình hồ sơ thay mặt bạn.',
+      eco_title: 'Đối tác & Kết nối',
+      eco_desc: 'Đừng mạo hiểm đi một mình. Chúng tôi kết nối bạn với mạng lưới chuyên gia đã được kiểm duyệt để đảm bảo bạn nhận được dịch vụ ưu tiên.',
+      eco_legal: 'Pháp lý & Sang tên',
+      eco_legal_d: 'Xem xét hợp đồng và xử lý thanh toán.',
+      eco_ins: 'Bảo hiểm & Bảo vệ',
+      eco_ins_d: 'Bảo vệ nhà cửa, tài sản và thu nhập.',
+      eco_ba: "Đại diện người mua",
+      eco_ba_d: 'Chuyên gia hỗ trợ tìm kiếm và đàm phán BĐS.',
+      eco_fin: 'Quy hoạch tài chính',
+      eco_fin_d: 'Cấu trúc tài sản và thuế dài hạn.',
+      btn_connect: 'Yêu cầu giới thiệu',
+      modal_title: 'Kết nối với chuyên gia {service}',
+      modal_desc: 'Chúng tôi sẽ giới thiệu bạn qua email để đảm bảo đối tác biết bạn là khách hàng của 1st Mortgage Group.',
+      form_name: 'Tên của bạn',
+      form_phone: 'Số điện thoại',
+      form_email: 'Email',
+      form_submit: 'Gửi yêu cầu',
+      success_msg: 'Đã gửi yêu cầu!',
+      success_desc: 'Chúng tôi đã nhận được yêu cầu. Một broker sẽ sớm gửi email giới thiệu chung kết nối bạn với đối tác của chúng tôi.',
       s1: 'Vay mua nhà',
       s1_f: ['Vay mua nhà lần đầu', 'Mua nhà để ở'],
       s2: 'Tái cấp vốn',
@@ -97,6 +176,25 @@ const ServicesPage: React.FC = () => {
       cta_btn: 'संपर्क करें',
       note_title: 'महत्वपूर्ण नोट',
       note_desc: 'हम केवल ऋण सहायता प्रदान करते हैं। ऋण स्वीकृति और ऋण निर्णय ऋणदाता द्वारा लिए जाते हैं। हमारी भूमिका सबसे उपयुक्त विकल्प खोजना और आपकी ओर से आवेदन प्रक्रिया का प्रबंधन करना है।',
+      eco_title: 'पार्टनर कंसीयज',
+      eco_desc: 'अकेले जाने का जोखिम न लें। हम आपको प्राथमिकता सेवा और VIP दरें सुनिश्चित करने के लिए पेशेवरों के हमारे नेटवर्क से परिचय कराते हैं।',
+      eco_legal: 'कानूनी और हस्तांतरण',
+      eco_legal_d: 'अनुबंध समीक्षा और निपटान प्रबंधन।',
+      eco_ins: 'बीमा और सुरक्षा',
+      eco_ins_d: 'भवन, सामग्री और आय सुरक्षा।',
+      eco_ba: "खरीदार की वकालत",
+      eco_ba_d: 'संपत्ति खोजने और बातचीत करने में विशेषज्ञ मदद।',
+      eco_fin: 'वित्तीय योजना',
+      eco_fin_d: 'दीर्घकालिक धन और कर संरचना।',
+      btn_connect: 'परिचय का अनुरोध करें',
+      modal_title: '{service} विशेषज्ञ के साथ जुड़ें',
+      modal_desc: 'हम ईमेल के माध्यम से आपका परिचय कराएंगे ताकि यह सुनिश्चित हो सके कि हमारा साथी जानता है कि आप 1st Mortgage Group के ग्राहक हैं।',
+      form_name: 'आपका नाम',
+      form_phone: 'फ़ोन नंबर',
+      form_email: 'ईमेल',
+      form_submit: 'परिचय अनुरोध भेजें',
+      success_msg: 'अनुरोध भेजा गया!',
+      success_desc: 'हमें आपका अनुरोध प्राप्त हुआ है। एक ब्रोकर जल्द ही आपको हमारे पसंदीदा साथी से जोड़ने के लिए एक संयुक्त ईमेल परिचय भेजेगा।',
       s1: 'होम लोन',
       s1_f: ['पहली बार घर खरीदार ऋण', 'स्वयं के रहने के लिए खरीदारी'],
       s2: 'पुनर्वित्त (Refinancing)',
@@ -119,6 +217,25 @@ const ServicesPage: React.FC = () => {
     { title: current.s4, icon: <Hammer className="w-8 h-8" />, features: current.s4_f, color: "bg-orange-50 text-orange-600" },
     { title: current.s5, icon: <Landmark className="w-8 h-8" />, features: current.s5_f, color: "bg-red-50 text-red-600" }
   ];
+
+  const partners = [
+    { title: current.eco_legal, desc: current.eco_legal_d, icon: <Scale className="w-5 h-5" />, id: 'legal' },
+    { title: current.eco_ins, desc: current.eco_ins_d, icon: <Shield className="w-5 h-5" />, id: 'insurance' },
+    { title: current.eco_ba, desc: current.eco_ba_d, icon: <Search className="w-5 h-5" />, id: 'buyers_agent' },
+    { title: current.eco_fin, desc: current.eco_fin_d, icon: <Briefcase className="w-5 h-5" />, id: 'finance' },
+  ];
+
+  const handlePartnerSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Logic to send email would go here
+    setSubmitted(true);
+  };
+
+  const closeModal = () => {
+    setSelectedPartner(null);
+    setSubmitted(false);
+    setFormState({ name: '', phone: '', email: '', notes: '' });
+  };
 
   return (
     <div className="py-24 bg-slate-50 min-h-screen">
@@ -162,6 +279,35 @@ const ServicesPage: React.FC = () => {
           </div>
         </div>
 
+        {/* Partner Ecosystem Section */}
+        <div className="mb-20">
+           <div className="text-center mb-12">
+              <div className="inline-flex items-center justify-center p-3 bg-white rounded-full mb-6 shadow-sm border border-slate-100">
+                <Handshake className="w-6 h-6 text-gold" />
+              </div>
+              <h2 className="text-3xl font-serif-brand italic font-bold text-slate-900 mb-4">{current.eco_title}</h2>
+              <p className="text-slate-600 max-w-2xl mx-auto font-medium">{current.eco_desc}</p>
+           </div>
+           
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {partners.map((p, i) => (
+                <div key={i} className="bg-white p-8 rounded-2xl border border-slate-100 hover:border-gold/30 hover:shadow-lg transition-all group flex flex-col h-full">
+                   <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-900 mb-4 group-hover:bg-gold group-hover:text-white transition-colors">
+                     {p.icon}
+                   </div>
+                   <h3 className="font-bold text-slate-900 text-sm mb-2">{p.title}</h3>
+                   <p className="text-xs text-slate-500 font-medium leading-relaxed mb-6 flex-grow">{p.desc}</p>
+                   <button 
+                    onClick={() => setSelectedPartner(p.title)}
+                    className="w-full py-2 bg-slate-50 hover:bg-gold hover:text-white text-slate-900 text-[10px] font-bold uppercase tracking-widest rounded-lg transition-colors"
+                   >
+                     {current.btn_connect}
+                   </button>
+                </div>
+              ))}
+           </div>
+        </div>
+
         <div className="max-w-4xl mx-auto bg-white border border-slate-200 rounded-[32px] p-10 flex items-start space-x-6 shadow-sm">
           <AlertCircle className="w-8 h-8 text-gold flex-shrink-0 mt-1" />
           <div>
@@ -172,6 +318,69 @@ const ServicesPage: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* Partner Connection Modal */}
+      {selectedPartner && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
+           <div className="bg-white rounded-[32px] max-w-lg w-full p-8 md:p-10 shadow-2xl relative">
+              <button onClick={closeModal} className="absolute top-6 right-6 p-2 text-slate-400 hover:text-slate-900 transition-colors">
+                <X className="w-6 h-6" />
+              </button>
+              
+              {!submitted ? (
+                <>
+                  <div className="flex items-center space-x-4 mb-6">
+                    <div className="p-3 bg-gold/10 rounded-full text-gold">
+                      <Handshake className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="text-2xl font-serif-brand italic font-bold text-slate-900">
+                        {current.modal_title.replace('{service}', selectedPartner)}
+                      </h3>
+                    </div>
+                  </div>
+                  
+                  <p className="text-slate-600 mb-8 font-medium text-sm leading-relaxed border-l-2 border-gold pl-4">
+                    {current.modal_desc}
+                  </p>
+
+                  <form onSubmit={handlePartnerSubmit} className="space-y-5">
+                    <div>
+                      <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">{current.form_name}</label>
+                      <input required type="text" value={formState.name} onChange={e => setFormState({...formState, name: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-gold outline-none font-bold text-slate-900" />
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">{current.form_phone}</label>
+                        <input required type="tel" value={formState.phone} onChange={e => setFormState({...formState, phone: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-gold outline-none font-bold text-slate-900" />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] font-bold uppercase tracking-widest text-slate-500 mb-2">{current.form_email}</label>
+                        <input required type="email" value={formState.email} onChange={e => setFormState({...formState, email: e.target.value})} className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:border-gold outline-none font-bold text-slate-900" />
+                      </div>
+                    </div>
+                    <button type="submit" className="w-full py-4 bg-slate-900 hover:bg-slate-800 text-white rounded-xl font-bold uppercase tracking-[0.2em] text-xs transition-colors shadow-lg mt-4">
+                      {current.form_submit}
+                    </button>
+                  </form>
+                </>
+              ) : (
+                <div className="text-center py-8">
+                  <div className="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6 text-green-500">
+                    <Check className="w-10 h-10" />
+                  </div>
+                  <h3 className="text-2xl font-serif-brand italic font-bold text-slate-900 mb-4">{current.success_msg}</h3>
+                  <p className="text-slate-600 font-medium mb-8 leading-relaxed max-w-sm mx-auto">
+                    {current.success_desc}
+                  </p>
+                  <button onClick={closeModal} className="px-8 py-3 bg-slate-100 hover:bg-slate-200 text-slate-900 rounded-xl font-bold text-xs uppercase tracking-widest transition-colors">
+                    Close
+                  </button>
+                </div>
+              )}
+           </div>
+        </div>
+      )}
     </div>
   );
 };

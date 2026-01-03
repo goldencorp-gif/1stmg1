@@ -3,28 +3,30 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Shield, BookOpen, UserCheck, Scale, Award, ChevronRight, TrendingUp, Sparkles, Send, Loader2, Bot } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { GoogleGenAI } from "@google/genai";
-import { useLanguage, Language } from '../App';
+import { useLanguage, useSiteConfig, Language } from '../App';
 
 const AIChatWidget: React.FC = () => {
   const { language } = useLanguage();
+  const config = useSiteConfig(); // Access site config for dynamic name
   const [messages, setMessages] = useState<{role: 'user' | 'model', text: string}[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   
-  // Changed from messagesEndRef to chatContainerRef to control internal scrolling
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const chatSessionRef = useRef<any>(null);
 
   useEffect(() => {
+    // Dynamic greeting using company name from config
+    const name = config.companyName;
     const greetings = {
-      en: "Hello! I'm the 1st Mortgage Group AI assistant. Ask me about LVR, stamp duty, or how we can help you today.",
-      zh: "您好！我是第一房贷集团（1st Mortgage Group）的AI助手。您可以向我咨询关于贷款比例（LVR）、印花税或我们如何为您提供帮助。",
-      es: "¡Hola! Soy el asistente de IA de 1st Mortgage Group. Pregúntame sobre LVR, el impuesto de timbre o cómo podemos ayudarte hoy.",
-      vi: "Xin chào! Tôi là trợ lý AI của 1st Mortgage Group. Hãy hỏi tôi về LVR, thuế trước bạ hoặc cách chúng tôi có thể giúp bạn hôm nay.",
-      hi: "नमस्ते! मैं 1st Mortgage Group का AI सहायक हूँ। मुझसे LVR, स्टाम्प ड्यूटी, या हम आज आपकी कैसे मदद कर सकते हैं, इसके बारे में पूछें।"
+      en: `Hello! I'm the ${name} AI assistant. Ask me about LVR, stamp duty, or how we can help you today.`,
+      zh: `您好！我是${name}的AI助手。您可以向我咨询关于贷款比例（LVR）、印花税或我们如何为您提供帮助。`,
+      es: `¡Hola! Soy el asistente de IA de ${name}. Pregúntame sobre LVR, el impuesto de timbre o cómo podemos ayudarte hoy.`,
+      vi: `Xin chào! Tôi là trợ lý AI của ${name}. Hãy hỏi tôi về LVR, thuế trước bạ hoặc cách chúng tôi có thể giúp bạn hôm nay.`,
+      hi: `नमस्ते! मैं ${name} का AI सहायक हूँ। मुझसे LVR, स्टाम्प ड्यूटी, या हम आज आपकी कैसे मदद कर सकते हैं, इसके बारे में पूछें।`
     };
     setMessages([{ role: 'model', text: greetings[language] }]);
-  }, [language]);
+  }, [language, config.companyName]);
 
   useEffect(() => {
     try {
@@ -32,7 +34,7 @@ const AIChatWidget: React.FC = () => {
       chatSessionRef.current = ai.chats.create({
         model: 'gemini-3-flash-preview',
         config: {
-          systemInstruction: `You are a professional, friendly AI assistant for '1st Mortgage Group', a premier Australian mortgage brokerage. 
+          systemInstruction: `You are a professional, friendly AI assistant for '${config.companyName}', a premier Australian mortgage brokerage. 
           CRITICAL: You must respond in the following language: ${
             language === 'zh' ? 'Chinese (Simplified)' : 
             language === 'es' ? 'Spanish' : 
@@ -50,10 +52,9 @@ const AIChatWidget: React.FC = () => {
     } catch (e) {
       console.error("Failed to init AI", e);
     }
-  }, [language]);
+  }, [language, config.companyName]);
 
   const scrollToBottom = () => {
-    // Only scroll the container, not the window
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
@@ -115,7 +116,6 @@ const AIChatWidget: React.FC = () => {
          </div>
       </div>
       
-      {/* Attached ref to container here */}
       <div 
         ref={chatContainerRef} 
         className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-900/50 scrollbar-thin scrollbar-thumb-slate-700"
@@ -163,62 +163,63 @@ const AIChatWidget: React.FC = () => {
 
 const AboutPage: React.FC = () => {
   const { language } = useLanguage();
+  const config = useSiteConfig(); // Use config for company name
 
   const content: Record<Language, any> = {
     en: {
       tag: 'Our Story',
-      title: 'About 1st Mortgage Group',
+      title: `About ${config.companyName}`,
       phil_title: 'Our Philosophy',
       phil_desc: 'We believe that good mortgage advice should be simple, ethical, and built for the long term. Our processes are designed to put your needs first.',
       phil_item1: 'Clear Advice',
       phil_item2: 'Best Interests',
       image_caption: 'Dedicated to your financial success.',
       ai_title: 'Unlock Your Property Potential',
-      ai_desc: 'Partner with 1st Mortgage Group for strategic property finance and wealth growth.'
+      ai_desc: `Partner with ${config.companyName} for strategic property finance and wealth growth.`
     },
     zh: {
       tag: '我们的故事',
-      title: '关于第一房贷集团',
+      title: `关于${config.companyName}`,
       phil_title: '我们的经营理念',
       phil_desc: '我们相信，优质的贷款建议应该是简单、符合道德规范且面向长期的。我们的所有流程都旨在将您的需求放在首位。',
       phil_item1: '清晰建议',
       phil_item2: '最佳利益',
       image_caption: '致力于您的财务成功。',
       ai_title: '开启您的房产潜力',
-      ai_desc: '与第一房贷集团合作，实现战略性的房产融资和财富增长。'
+      ai_desc: `与${config.companyName}合作，实现战略性的房产融资和财富增长。`
     },
     es: {
       tag: 'Nuestra Historia',
-      title: 'Acerca de 1st Mortgage Group',
+      title: `Acerca de ${config.companyName}`,
       phil_title: 'Nuestra Filosofía',
       phil_desc: 'Creemos que un buen asesoramiento hipotecario debe ser sencillo, ético y pensado a largo plazo. Nuestros procesos están diseñados para poner sus necesidades en primer lugar.',
       phil_item1: 'Asesoramiento Claro',
       phil_item2: 'Mejores Intereses',
       image_caption: 'Dedicados a su éxito financiero.',
       ai_title: 'Libere su Potencial Inmobiliario',
-      ai_desc: 'Asóciese con 1st Mortgage Group para obtener financiación estratégica y crecimiento patrimonial.'
+      ai_desc: `Asóciese con ${config.companyName} para obtener financiación estratégica y crecimiento patrimonial.`
     },
     vi: {
       tag: 'Câu chuyện của chúng tôi',
-      title: 'Về 1st Mortgage Group',
+      title: `Về ${config.companyName}`,
       phil_title: 'Triết lý của chúng tôi',
       phil_desc: 'Chúng tôi tin rằng lời khuyên thế chấp tốt phải đơn giản, có đạo đức và được xây dựng cho mục tiêu lâu dài. Quy trình của chúng tôi được thiết kế để đặt nhu cầu của bạn lên hàng đầu.',
       phil_item1: 'Lời khuyên rõ ràng',
       phil_item2: 'Lợi ích tốt nhất',
       image_caption: 'Tận tâm vì sự thành công tài chính của bạn.',
       ai_title: 'Khai thác tiềm năng bất động sản',
-      ai_desc: 'Hợp tác với 1st Mortgage Group để có tài chính bất động sản chiến lược và tăng trưởng tài sản.'
+      ai_desc: `Hợp tác với ${config.companyName} để có tài chính bất động sản chiến lược và tăng trưởng tài sản.`
     },
     hi: {
       tag: 'हमारी कहानी',
-      title: '1st Mortgage Group के बारे में',
+      title: `${config.companyName} के बारे में`,
       phil_title: 'हमारा दर्शन',
       phil_desc: 'हमारा मानना है कि अच्छी मॉर्गेज सलाह सरल, नैतिक और दीर्घकालिक होनी चाहिए। हमारी प्रक्रियाएं आपकी आवश्यकताओं को प्राथमिकता देने के लिए डिज़ाइन की गई हैं।',
       phil_item1: 'स्पष्ट सलाह',
       phil_item2: 'सर्वोत्तम हित',
       image_caption: 'आपकी वित्तीय सफलता के लिए समर्पित।',
       ai_title: 'अपनी संपत्ति की क्षमता को अनलॉक करें',
-      ai_desc: 'रणनीतिक संपत्ति वित्त और धन वृद्धि के लिए 1st Mortgage Group के साथ जुड़ें।'
+      ai_desc: `रणनीतिक संपत्ति वित्त और धन वृद्धि के लिए ${config.companyName} के साथ जुड़ें।`
     }
   };
 
