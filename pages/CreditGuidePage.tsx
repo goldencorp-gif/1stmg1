@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ShieldCheck, Award, FileText, Scale } from 'lucide-react';
+import { ShieldCheck, Award, FileText, Scale, DollarSign } from 'lucide-react';
 import { useLanguage, Language } from '../App';
 
 const CreditGuidePage: React.FC = () => {
@@ -15,7 +15,9 @@ const CreditGuidePage: React.FC = () => {
       licensing_body: '1st Mortgage Group provides credit assistance as a Credit Representative of Purple Circle Financial Services Pty Ltd (ACL 423568).',
       legal_body: 'All services are provided in accordance with the National Consumer Credit Protection Act and ASIC requirements.',
       commitment_title: 'Our Commitment',
-      commitment_body: 'As your credit representative, we are bound by professional standards to ensure that any credit product we suggest is not unsuitable for your requirements and financial situation.'
+      commitment_body: 'As your credit representative, we are bound by professional standards to ensure that any credit product we suggest is not unsuitable for your requirements and financial situation.',
+      fees_title: 'Referral Fees & Commissions',
+      fees_body: 'We may receive a referral fee or commission from third-party partners (such as insurance providers, conveyancers, or buyer\'s agents) if you choose to use their services upon our recommendation. This amount varies by partner and will be disclosed to you at the time of referral. This fee is not payable by you directly, but is paid to us by the partner.'
     },
     zh: {
       tag: '合规信息',
@@ -25,7 +27,9 @@ const CreditGuidePage: React.FC = () => {
       licensing_body: '第一房贷集团作为 Purple Circle Financial Services Pty Ltd (ACL 423568) 的信贷代表提供信贷协助。',
       legal_body: '所有服务均根据《国家消费者信贷保护法》和澳大利亚证券和投资委员会 (ASIC) 的要求提供。',
       commitment_title: '我们的承诺',
-      commitment_body: '作为您的信贷代表，我们受专业标准约束，确保我们建议的任何信贷产品都符合您的要求和财务状况。'
+      commitment_body: '作为您的信贷代表，我们受专业标准约束，确保我们建议的任何信贷产品都符合您的要求和财务状况。',
+      fees_title: '推荐费与佣金',
+      fees_body: '如果您根据我们的建议选择使用第三方合作伙伴（如保险提供商、过户师或买家代理）的服务，我们可能会收到推荐费或佣金。金额因合作伙伴而异，并将在推荐时向您披露。此费用不由您直接支付，而是由合作伙伴支付给我们。'
     },
     es: {
       tag: 'Cumplimiento',
@@ -35,7 +39,9 @@ const CreditGuidePage: React.FC = () => {
       licensing_body: '1st Mortgage Group proporciona asistencia crediticia como Representante de Crédito de Purple Circle Financial Services Pty Ltd (ACL 423568).',
       legal_body: 'Todos los servicios se prestan de acuerdo con la Ley Nacional de Protección del Crédito al Consumidor y los requisitos de ASIC.',
       commitment_title: 'Nuestro Compromiso',
-      commitment_body: 'Como su representante de crédito, estamos obligados por estándares profesionales a garantizar que cualquier producto de crédito que sugiramos no sea inadecuado para sus necesidades y situación financiera.'
+      commitment_body: 'Como su representante de crédito, estamos obligados por estándares profesionales a garantizar que cualquier producto de crédito que sugiramos no sea inadecuado para sus necesidades y situación financiera.',
+      fees_title: 'Comisiones de Referencia',
+      fees_body: 'Podemos recibir una comisión de referencia de socios externos (como proveedores de seguros o agentes inmobiliarios) si elige utilizar sus servicios. Este monto varía y se le informará en el momento de la referencia. Esta tarifa no la paga usted directamente.'
     },
     vi: {
       tag: 'Tuân thủ',
@@ -45,7 +51,9 @@ const CreditGuidePage: React.FC = () => {
       licensing_body: '1st Mortgage Group cung cấp hỗ trợ tín dụng với tư cách là Đại diện Tín dụng của Purple Circle Financial Services Pty Ltd (ACL 423568).',
       legal_body: 'Tất cả các dịch vụ được cung cấp theo Đạo luật Bảo vệ Tín dụng Tiêu dùng Quốc gia và các yêu cầu của ASIC.',
       commitment_title: 'Cam kết của chúng tôi',
-      commitment_body: 'Với tư cách là đại diện tín dụng của bạn, chúng tôi bị ràng buộc bởi các tiêu chuẩn chuyên môn để đảm bảo rằng bất kỳ sản phẩm tín dụng nào chúng tôi đề xuất đều không phù hợp với yêu cầu và tình hình tài chính của bạn.'
+      commitment_body: 'Với tư cách là đại diện tín dụng của bạn, chúng tôi bị ràng buộc bởi các tiêu chuẩn chuyên môn để đảm bảo rằng bất kỳ sản phẩm tín dụng nào chúng tôi đề xuất đều không phù hợp với yêu cầu và tình hình tài chính của bạn.',
+      fees_title: 'Phí giới thiệu & Hoa hồng',
+      fees_body: 'Chúng tôi có thể nhận được phí giới thiệu hoặc hoa hồng từ các đối tác thứ ba (như nhà cung cấp bảo hiểm, luật sư) nếu bạn chọn sử dụng dịch vụ của họ. Số tiền này sẽ được tiết lộ cho bạn tại thời điểm giới thiệu.'
     },
     hi: {
       tag: 'अनुपालन',
@@ -55,7 +63,9 @@ const CreditGuidePage: React.FC = () => {
       licensing_body: '1st Mortgage Group Purple Circle Financial Services Pty Ltd (ACL 423568) के क्रेडिट प्रतिनिधि के रूप में क्रेडिट सहायता प्रदान करता है।',
       legal_body: 'सभी सेवाएं राष्ट्रीय उपभोक्ता क्रेडिट संरक्षण अधिनियम और ASIC आवश्यकताओं के अनुसार प्रदान की जाती हैं।',
       commitment_title: 'हमारी प्रतिबद्धता',
-      commitment_body: 'आपके क्रेडिट प्रतिनिधि के रूप में, हम यह सुनिश्चित करने के लिए पेशेवर मानकों से बंधे हैं कि हमारे द्वारा सुझाया गया कोई भी क्रेडिट उत्पाद आपकी आवश्यकताओं और वित्तीय स्थिति के लिए अनुपयुक्त न हो।'
+      commitment_body: 'आपके क्रेडिट प्रतिनिधि के रूप में, हम यह सुनिश्चित करने के लिए पेशेवर मानकों से बंधे हैं कि हमारे द्वारा सुझाया गया कोई भी क्रेडिट उत्पाद आपकी आवश्यकताओं और वित्तीय स्थिति के लिए अनुपयुक्त न हो।',
+      fees_title: 'रेफरल शुल्क और कमीशन',
+      fees_body: 'यदि आप हमारी सिफारिश पर उनकी सेवाओं का उपयोग करना चुनते हैं, तो हम तृतीय-पक्ष भागीदारों (जैसे बीमा प्रदाता) से रेफरल शुल्क या कमीशन प्राप्त कर सकते हैं। यह राशि भागीदार के अनुसार भिन्न होती है और रेफरल के समय आपको बताई जाएगी।'
     }
   };
 
@@ -106,6 +116,19 @@ const CreditGuidePage: React.FC = () => {
             </div>
             <p className="text-slate-600 leading-relaxed font-medium">
               {current.commitment_body}
+            </p>
+          </section>
+
+          {/* New Referral Fees Section */}
+          <section className="bg-white p-10 rounded-[32px] border border-slate-200">
+            <div className="flex items-center space-x-4 mb-6">
+              <div className="w-12 h-12 rounded-2xl bg-green-50 flex items-center justify-center shadow-sm">
+                <DollarSign className="w-6 h-6 text-green-600" />
+              </div>
+              <h2 className="text-2xl font-serif-brand italic font-bold text-slate-900">{current.fees_title}</h2>
+            </div>
+            <p className="text-slate-600 leading-relaxed font-medium">
+              {current.fees_body}
             </p>
           </section>
 
