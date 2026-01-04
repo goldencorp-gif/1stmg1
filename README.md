@@ -3,14 +3,14 @@
 
 This is the official website for 1st Mortgage Group, built with React, Vite, and Tailwind CSS.
 
-## 🎨 How to Add Your Logo
+## 🎨 How to Add Your Logo & Favicon
 
-To display your company logo, follow these steps:
+To display your company logo and browser icon (favicon), follow these steps:
 
 1.  **Locate the `public` folder** in the main directory of this project.
 2.  **Upload your logo image** into that `public` folder.
 3.  **Rename the image** to `logo.png`.
-4.  The website will automatically detect it.
+4.  The website will automatically detect it and use it for **both the site logo and the browser tab icon**.
 
 ### Separate Header & Footer Logos
 If you want a different logo for the footer (e.g., a simplified version), follow these steps:
@@ -59,7 +59,7 @@ You can update the **Company Name**, **Phone Number**, and **Email** by editing 
 **Example `public/site-settings.json`:**
 ```json
 {
-  "logoUrl": "/logo.png",                 // Main logo
+  "logoUrl": "/logo.png",                 // Main logo & Favicon
   "footerLogoUrl": "",                    // Optional separate footer logo
   "companyName": "1st Mortgage Group",
   "contactPhone": "(+61) 432 866 168",    // Display text for phone
