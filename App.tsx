@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState, createContext, useContext } from 'react';
-import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Menu, X, Phone, Mail, AlertCircle, ExternalLink } from 'lucide-react';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
