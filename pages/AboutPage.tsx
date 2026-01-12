@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useRef } from 'react';
-import { Shield, BookOpen, UserCheck, Scale, Award, ChevronRight, TrendingUp, Sparkles, Send, Loader2, Bot } from 'lucide-react';
+import { Shield, BookOpen, UserCheck, Scale, Award, ChevronRight, TrendingUp, Sparkles, Send, Loader2, Bot, AlertTriangle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { GoogleGenAI } from "@google/genai";
 import { useLanguage, useSiteConfig, Language } from '../App';
@@ -11,6 +11,9 @@ const AIChatWidget: React.FC = () => {
   const [messages, setMessages] = useState<{role: 'user' | 'model', text: string}[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Safety check: Ensure API Key exists to prevent iframe/popup errors in preview environments
+  const hasApiKey = !!process.env.API_KEY;
   
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const chatSessionRef = useRef<any>(null);
@@ -25,10 +28,17 @@ const AIChatWidget: React.FC = () => {
       vi: `Xin chào! Tôi là trợ lý AI của ${name}. Hãy hỏi tôi về LVR, thuế trước bạ hoặc cách chúng tôi có thể giúp bạn hôm nay.`,
       hi: `नमस्ते! मैं ${name} का AI सहायक हूँ। मुझसे LVR, स्टाम्प ड्यूटी, या हम आज आपकी कैसे मदद कर सकते हैं, इसके बारे में पूछें।`
     };
-    setMessages([{ role: 'model', text: greetings[language] }]);
-  }, [language, config.companyName]);
+
+    if (!hasApiKey) {
+      setMessages([{ role: 'model', text: "System Alert: API Key is missing. The AI Assistant is currently offline. Please configure your API_KEY environment variable to enable this feature." }]);
+    } else {
+      setMessages([{ role: 'model', text: greetings[language] }]);
+    }
+  }, [language, config.companyName, hasApiKey]);
 
   useEffect(() => {
+    if (!hasApiKey) return;
+
     try {
       const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       chatSessionRef.current = ai.chats.create({
@@ -51,8 +61,9 @@ const AIChatWidget: React.FC = () => {
       });
     } catch (e) {
       console.error("Failed to init AI", e);
+      setMessages(prev => [...prev, { role: 'model', text: "System: Failed to initialize AI connection." }]);
     }
-  }, [language, config.companyName]);
+  }, [language, config.companyName, hasApiKey]);
 
   const scrollToBottom = () => {
     if (chatContainerRef.current) {
@@ -63,7 +74,7 @@ const AIChatWidget: React.FC = () => {
   useEffect(() => { scrollToBottom(); }, [messages]);
 
   const handleSend = async () => {
-    if (!input.trim() || isLoading) return;
+    if (!input.trim() || isLoading || !hasApiKey) return;
     const userMessage = input;
     setInput('');
     setMessages(prev => [...prev, { role: 'user', text: userMessage }]);
@@ -103,14 +114,14 @@ const AIChatWidget: React.FC = () => {
     <div className="bg-slate-800 rounded-2xl border border-slate-700 overflow-hidden flex flex-col h-[450px] shadow-2xl relative z-20">
       <div className="p-4 bg-slate-950 border-b border-slate-700 flex items-center justify-between">
          <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center border border-gold/30">
-                <Bot className="w-5 h-5 text-gold" />
+            <div className={`w-8 h-8 rounded-full flex items-center justify-center border ${hasApiKey ? 'bg-gold/20 border-gold/30' : 'bg-red-900/20 border-red-500/30'}`}>
+                {hasApiKey ? <Bot className="w-5 h-5 text-gold" /> : <AlertTriangle className="w-4 h-4 text-red-500" />}
             </div>
             <div>
                 <h3 className="text-white font-bold text-sm tracking-wide">AI Assistant</h3>
                 <div className="flex items-center space-x-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
-                    <span className="text-[10px] text-slate-400 font-medium">Online</span>
+                    <span className={`w-1.5 h-1.5 rounded-full ${hasApiKey ? 'bg-emerald-500' : 'bg-red-500'} animate-pulse`}></span>
+                    <span className="text-[10px] text-slate-400 font-medium">{hasApiKey ? 'Online' : 'Offline'}</span>
                 </div>
             </div>
          </div>
@@ -145,13 +156,14 @@ const AIChatWidget: React.FC = () => {
               type="text" 
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder={placeholders[language]}
-              className="flex-1 bg-slate-800 text-white placeholder-slate-500 text-sm rounded-xl px-4 py-3.5 focus:outline-none focus:ring-1 focus:ring-gold border border-slate-700 transition-all"
+              disabled={!hasApiKey || isLoading}
+              placeholder={!hasApiKey ? "System Offline (Config Required)" : placeholders[language]}
+              className={`flex-1 bg-slate-800 text-white placeholder-slate-500 text-sm rounded-xl px-4 py-3.5 focus:outline-none focus:ring-1 border border-slate-700 transition-all ${!hasApiKey ? 'opacity-50 cursor-not-allowed' : 'focus:ring-gold'}`}
             />
             <button 
                type="submit" 
-               disabled={isLoading || !input.trim()}
-               className="p-3.5 bg-gold hover:bg-[#b8962e] text-slate-900 rounded-xl transition-all shadow-lg"
+               disabled={!hasApiKey || isLoading || !input.trim()}
+               className={`p-3.5 rounded-xl transition-all shadow-lg ${!hasApiKey || isLoading || !input.trim() ? 'bg-slate-700 text-slate-500 cursor-not-allowed' : 'bg-gold hover:bg-[#b8962e] text-slate-900'}`}
             >
                <Send className="w-4 h-4" />
             </button>
